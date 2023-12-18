@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "dbg.h"
+#include "grafx/dbg.h"
 
 
 #define mu_suite_start() char *message = NULL

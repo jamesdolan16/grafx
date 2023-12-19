@@ -16,7 +16,6 @@
 #include "entity.h"
 #include "texture.h"
 #include "sprite.h"
-""
-
+#include "panel.h"
 
 #endif

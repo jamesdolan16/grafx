@@ -1,5 +1,6 @@
 CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
-LIBS=-ldl $(OPTLIBS)
+COMMON_LIBS=-ldl $(OPTLIBS)
+LDLIBS=$(COMMON_LIBS) -pthread -lSDL2 -lSDL2_image -lm -lSDL2_ttf -lSDL2_gfx
 PREFIX?=/urs/local
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
@@ -31,7 +32,7 @@ build:
 
 # The unit tests
 .PHONY: tests
-tests: CFLAGS += $(TARGET)
+tests: CFLAGS += $(TARGET) $(COMMON_LIBS)
 tests: $(TESTS)
 	sh ./tests/runtests.sh
 

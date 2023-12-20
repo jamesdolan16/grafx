@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 
 #include "bstrlib.h"
-
+/*
 typedef struct {
     Uint32 width;
     Uint32 height;
@@ -19,5 +19,5 @@ GFX_Panel *GFX_PanelConstruct(const_bstring id, GFX_Buffer *buffer,
 void GFX_PanelDestroy(GFX_Panel *panel);
 
 GFX_ERROR_CODE GFX_PanelRender(SDL_Renderer *renderer);
-
+*/
 #endif

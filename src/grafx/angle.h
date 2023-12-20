@@ -8,7 +8,7 @@ typedef enum {
 
 typedef struct {
     GFX_ANGLE_FORMAT format; 
-    double val;
+    double value;
 } GFX_Angle;
 
 #endif

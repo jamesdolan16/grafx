@@ -2,12 +2,14 @@
 #define _grafx_sprite_h
 
 #include <stdlib.h>
+#include <SDL2/SDL.h>
 
 #include "dbg.h"
 #include "angle.h"
 #include "texture.h"
+#include "entity.h"
 
-typedef struct {
+typedef struct GFX_Sprite{
     GFX_Entity base;
     GFX_Texture *texture;
 } GFX_Sprite;

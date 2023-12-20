@@ -1,0 +1,36 @@
+DEBUG tests/buffer_tests.c:39: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:34: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:35: 
+----- test_BufferDestroy
+[ERROR] (tests/buffer_tests.c:25: test_BufferDestroy errno: None) Failed to destroy GFX_Buffer.
+DEBUG tests/buffer_tests.c:39: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:34: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:35: 
+----- test_BufferDestroy
+[ERROR] (tests/buffer_tests.c:25: test_BufferDestroy errno: None) Failed to destroy GFX_Buffer.
+DEBUG tests/buffer_tests.c:39: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:34: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:35: 
+----- test_BufferDestroy
+[ERROR] (tests/buffer_tests.c:25: test_BufferDestroy errno: None) Failed to destroy GFX_Buffer.
+DEBUG tests/buffer_tests.c:39: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:34: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:35: 
+----- test_BufferDestroy
+[ERROR] (tests/buffer_tests.c:25: test_BufferDestroy errno: None) Failed to destroy GFX_Buffer.
+DEBUG tests/buffer_tests.c:40: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:35: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:36: 
+----- test_BufferDestroy
+[ERROR] (tests/buffer_tests.c:26: test_BufferDestroy errno: None) Failed to destroy GFX_Buffer.
+DEBUG tests/buffer_tests.c:40: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:35: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:36: 
+----- test_BufferDestroy
+[ERROR] (tests/buffer_tests.c:26: test_BufferDestroy errno: None) Failed to destroy GFX_Buffer.

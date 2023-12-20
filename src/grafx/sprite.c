@@ -26,7 +26,7 @@ GFX_Sprite *SpriteConstruct(float x, float y, GFX_Angle angle, GFX_Texture *text
     GFX_Sprite *sprite = GFX_SpriteCreate();
     check_mem(sprite);
 
-    *sprite = (GFX_Sprite){ { .x = x, .y = y, .angle = angle }, .texture = texture };
+    *sprite = (GFX_Sprite){ .base={.x=x, .y=y, .angle=angle}, .texture = texture };
 
     return sprite;
 error:

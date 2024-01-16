@@ -34,3 +34,18 @@ DEBUG tests/buffer_tests.c:35:
 DEBUG tests/buffer_tests.c:36: 
 ----- test_BufferDestroy
 [ERROR] (tests/buffer_tests.c:26: test_BufferDestroy errno: None) Failed to destroy GFX_Buffer.
+DEBUG tests/buffer_tests.c:44: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:39: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:40: 
+----- test_BufferClear
+DEBUG tests/buffer_tests.c:44: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:39: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:40: 
+----- test_BufferClear
+DEBUG tests/buffer_tests.c:46: ----- RUNNING: ./tests/buffer_tests
+DEBUG tests/buffer_tests.c:41: 
+----- test_BufferConstruct
+DEBUG tests/buffer_tests.c:42: 
+----- test_BufferClear

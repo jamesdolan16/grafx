@@ -2,3 +2,4 @@
 *.so
 *.a
 *_tests
+tests/tests.log

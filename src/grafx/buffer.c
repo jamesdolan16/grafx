@@ -32,7 +32,7 @@ GFX_Buffer *GFX_BufferConstruct(const_bstring id, Uint32 width, Uint32 height,
     return buffer;
 
 error:
-    for( ; row >= 0; row--){   
+    for(; row >= 0; row--){   
         free(pixels[row]);
     }
     if(pixels)  free(pixels);
@@ -44,15 +44,37 @@ error:
 /**
  * Destroys the provided GFX_Buffer
 */
-void GFX_BufferDestroy(GFX_Buffer *buffer)
+GFX_ERROR_CODE GFX_BufferDestroy(GFX_Buffer *buffer)
 {
-    if(buffer){
-        for(Uint32 row = 0; row < buffer->height; row++){
-            free(buffer->pixels[row]);
-            buffer->pixels[row] = NULL;
-        }
-        free(buffer->pixels);
-        buffer->pixels = NULL;
-        free(buffer);
+    check(buffer != NULL, "Null buffer provided.");
+
+    for(Uint32 row = 0; row < buffer->height; row++){
+        free(buffer->pixels[row]);
+        buffer->pixels[row] = NULL;
     }
+    free(buffer->pixels);
+    buffer->pixels = NULL;
+    free(buffer);
+
+    return GFX_EC_NOERROR;
+error:
+    return GFX_EC_NULLPTR;
+}
+
+/**
+ * Clears all the pixel data in the buffer
+*/
+GFX_ERROR_CODE GFX_BufferClear(GFX_Buffer *buffer)
+{
+    check(buffer != NULL, "Null buffer provided.");
+
+    for(Uint32 row = 0; row < buffer->height; row++){
+        for(Uint32 column = 0; column < buffer->width; column++){
+            buffer->pixels[row][column] = 0;
+        }
+    }
+
+    return GFX_EC_NOERROR;
+error:
+    return GFX_EC_NULLPTR;
 }

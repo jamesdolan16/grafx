@@ -11,11 +11,10 @@ GFX_Panel *GFX_PanelConstruct(SDL_Renderer *renderer, const_bstring id, GFX_Buff
 {
     check(renderer != NULL, "Null renderer provided.");
     check(buffer != NULL, "Null buffer provided.");
-
     GFX_Panel *panel = PanelCreate();
     check_mem(panel);
 
-    SDL_Texture *texture = SDL_CreateTexture(renderer, panel->buffer->sdl_pixel_format,
+    SDL_Texture *texture = SDL_CreateTexture(renderer, buffer->sdl_pixel_format,
                                             SDL_TEXTUREACCESS_STREAMING,
                                             width, height);
     check_sdl_ptr(texture);
@@ -44,7 +43,7 @@ GFX_ERROR_CODE GFX_PanelRender(GFX_Panel *panel)
 {
     check_mem(panel);
 
-    int rc = SDL_UpdateTexture(panel->texture, NULL, panel->buffer, 
+    int rc = SDL_UpdateTexture(panel->texture, NULL, panel->buffer->pixels, 
                         panel->width * sizeof(Uint32));
     check_sdl_rc(rc);
 

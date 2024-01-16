@@ -13,7 +13,7 @@ static GFX_Buffer *BufferCreate()
 GFX_Buffer *GFX_BufferConstruct(const_bstring id, Uint32 width, Uint32 height, 
                             Uint32 sdl_pixel_format)
 {
-    int row = 0;
+    Uint32 row = 0;
     Uint32 **pixels = NULL;
 
     GFX_Buffer *buffer = BufferCreate();
@@ -32,7 +32,7 @@ GFX_Buffer *GFX_BufferConstruct(const_bstring id, Uint32 width, Uint32 height,
     return buffer;
 
 error:
-    for(; row >= 0; row--){   
+    for(; row > 0; row--){   
         free(pixels[row]);
     }
     if(pixels)  free(pixels);

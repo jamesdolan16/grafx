@@ -46,19 +46,17 @@ char *test_PanelRender()
 
 char *all_tests()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
-        fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
-        // Handle initialization failure
-        return NULL;
-    }
+    check(SDL_Init(SDL_INIT_VIDEO) != 0, "SDL_Init Error: %s\n", SDL_GetError());
+    setup();
 
     mu_suite_start();
-    setup();
 
     mu_run_test(test_PanelConstruct);
     mu_run_test(test_PanelRender);
 
     teardown();
+
+error:
     return NULL;
 }
 

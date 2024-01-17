@@ -46,7 +46,7 @@ char *test_PanelRender()
 
 char *all_tests()
 {
-    check(SDL_Init(SDL_INIT_VIDEO) != 0, "SDL_Init Error: %s\n", SDL_GetError());
+    check(SDL_Init(SDL_INIT_VIDEO) == 0, "SDL_Init Error: %s\n", SDL_GetError());
     setup();
 
     mu_suite_start();

@@ -4,6 +4,7 @@
 #include <math.h>
 
 #define GFX_PI 3.14159
+#define GFX_ANGLE_MIN_ACCURACY 0.000001
 
 typedef enum {
     GFX_ANGLE_FORMAT_RADIAN,

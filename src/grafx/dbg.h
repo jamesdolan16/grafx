@@ -25,6 +25,8 @@
 
 #define check_sdl_ptr(A) if(A == NULL) { log_err("%s", SDL_GetError()); errno=0; goto error; }
 
+#define check_ptr(A, M, ...) if(!(A)) { log_err(M, ##__VA_ARGS__); errno=0; goto nullptr; }
+
 #define sentinel(M, ...) { log_err(M, ##__VA_ARGS__); errno=0; goto error; }
 
 #define check_mem(A) check((A), "Out of memory.");

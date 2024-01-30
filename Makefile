@@ -1,6 +1,6 @@
 CFLAGS=-g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
 COMMON_LIBS=-ldl $(OPTLIBS) -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_gfx
-LDLIBS=$(COMMON_LIBS) -pthread -lm -L./build -lGrafx
+LDLIBS=$(COMMON_LIBS) -pthread -lm -L./build -lGrafx -L./lib -llcthw
 PREFIX?=/urs/local
 
 SOURCES=$(wildcard src/**/*.c src/*.c)
@@ -18,7 +18,7 @@ all: $(TARGET) $(SO_TARGET) tests
 dev: CFLAGS=-g -Wall -Isrc -Wall -Wextra $(OPTFLAGS)
 dev: all
 
-$(TARGET): CFLAGS += -fPIC
+$(TARGET): CFLAGS += -fPIC 
 $(TARGET): build $(OBJECTS)
 	ar rcs $@ $(OBJECTS)
 	ranlib $@

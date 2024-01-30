@@ -9,7 +9,7 @@ char *test_AngleDegToRad()
     a = GFX_AngleFromDeg(180.0);
     b = GFX_AngleDegToRad(a);
 
-    mu_assert(fabs(b.value - GFX_PI) < 0.000001, "Failed to convert degress to radians accurately");
+    mu_assert(fabs(b.value - GFX_PI) < GFX_ANGLE_MIN_ACCURACY, "Failed to convert degress to radians accurately");
 
     return NULL;
 }
@@ -21,7 +21,7 @@ char *test_AngleRadToDeg()
     a = GFX_AngleFromRad(GFX_PI);   // Equivalent to 180deg
     b = GFX_AngleRadToDeg(a);
 
-    mu_assert(fabs(b.value - 180) < 0.000001, "Failed to convert radians to degrees accurately");
+    mu_assert(fabs(b.value - 180) < GFX_ANGLE_MIN_ACCURACY, "Failed to convert radians to degrees accurately");
 
     return NULL;
 }

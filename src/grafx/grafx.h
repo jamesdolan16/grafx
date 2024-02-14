@@ -17,5 +17,11 @@
 #include "texture.h"
 #include "sprite.h"
 #include "panel.h"
+#include "stage.h"
+#include "camera.h"
+#include "tile.h"
+#include "tilemap.h"
+#include "tiletype.h"
+#include "vec2.h"
 
 #endif

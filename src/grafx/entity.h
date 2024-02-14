@@ -1,6 +1,8 @@
 #ifndef _grafx_entity_h
 #define _grafx_entity_h
 
+#include "grafx.h"
+
 /**
  * Store information about any "thing" that can exist in the game world
 */

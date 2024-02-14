@@ -5,7 +5,7 @@ static GFX_Tile *TileCreate(void)
     return (GFX_Tile *)calloc(1, sizeof(GFX_Tile));
 }
 
-GFX_Tile *GFX_TileConstruct(const_bstring id, GFX_TileType *tiletype, float x, float y, float h)
+GFX_Tile *GFX_TileConstruct(const_bstring id, GFX_TileType *tiletype, double x, double y, double h)
 {
     check(tiletype != NULL, "Null tiletype provided.");
 

@@ -8,7 +8,11 @@
 
 typedef struct GFX_Sprite{
     GFX_Entity base;
-    GFX_Texture *texture;
+    SDL_Surface *texture;
+    double distance;
+    double h_scale;
+    double v_scale;
+    double v_pos;
 } GFX_Sprite;
 
 /**
@@ -20,8 +24,10 @@ typedef struct GFX_Sprite{
  * 
  * @returns Pointer to the newly created Sprite or NULL upon failure
 */
-GFX_Sprite *GFX_SpriteConstruct(float x, float y, GFX_Angle angle, GFX_Texture *texture);
+GFX_Sprite *GFX_SpriteConstruct(float x, float y, GFX_Angle angle, SDL_Surface *texture);
 void GFX_SpriteDestroy(GFX_Sprite *sprite);
+
+
 
 
 #endif

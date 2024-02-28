@@ -10,11 +10,15 @@
 #include <SDL2/SDL_timer.h>
 #include <SDL2/SDL_image.h>
 
+#include <lcthw/list.h>
+#include <lcthw/list_algos.h>
+#include <darray.h>
+#include <darray_algos.h>
+
 #include "dbg.h"
 #include "bstrlib.h"
 #include "angle.h"
 #include "entity.h"
-#include "texture.h"
 #include "sprite.h"
 #include "panel.h"
 #include "stage.h"

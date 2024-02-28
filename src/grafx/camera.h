@@ -7,6 +7,7 @@ typedef struct {
     GFX_Entity base;
     GFX_Buffer *buffer;
     GFX_Stage *stage;
+    double *z_buffer;
     Uint32 width;               // horizontal size of the camera render
     Uint32 height;              // vertical size of the camera render
     GFX_Vec2 plane;             // camera plane

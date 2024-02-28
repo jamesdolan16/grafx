@@ -13,10 +13,14 @@ GFX_Stage *GFX_StageContruct(const_bstring id, GFX_Buffer *buffer, GFX_TileMap *
     GFX_Stage *stage = StageCreate();
     check_mem(stage);
 
+    stage->sprites = DArray_create(sizeof(GFX_Sprite), 32);
+    check_mem(stage->sprites);
+
     stage->tilemap = tilemap;
 
     return stage;
 error:
+    if(stage) GFX_StageDestroy(stage);
     return NULL;
 }
 

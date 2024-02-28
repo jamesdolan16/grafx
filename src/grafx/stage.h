@@ -8,10 +8,10 @@
 typedef struct{
     const_bstring id;
     GFX_TileMap *tilemap;
+    DArray *sprites;
 } GFX_Stage;
 
 GFX_Stage *GFX_StageContruct(const_bstring id, GFX_Buffer *buffer, GFX_TileMap *tilemap);
-
 void GFX_StageDestroy(GFX_Stage *stage);
 
 #endif

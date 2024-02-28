@@ -11,12 +11,13 @@ static GFX_Sprite *SpriteCreate()
 }
 
 
-GFX_Sprite *SpriteConstruct(float x, float y, GFX_Angle angle, GFX_Texture *texture)
+GFX_Sprite *SpriteConstruct(float x, float y, GFX_Angle angle, SDL_Surface *texture)
 {
     GFX_Sprite *sprite = SpriteCreate();
     check_mem(sprite);
 
-    *sprite = (GFX_Sprite){ .base={.x=x, .y=y, .angle=angle}, .texture = texture };
+    *sprite = (GFX_Sprite){ .base={.x=x, .y=y, .angle=angle}, .texture = texture,
+                            .h_scale=1, .v_scale=1, .v_pos=0.0 };
 
     return sprite;
 error:

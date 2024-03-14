@@ -27,7 +27,6 @@ error:
 void GFX_SpriteDestroy(GFX_Sprite *sprite)
 {
     check(sprite != NULL, "Null sprite provided.");
-
-    GFX_TextureDestroy(sprite->texture);
+    free(sprite);
 error:
 }

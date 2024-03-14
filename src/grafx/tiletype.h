@@ -2,6 +2,7 @@
 #define _grafx_tiletype_h
 
 #include "bstrlib.h"
+#include "dbg.h"
 
 #include <SDL2/SDL.h>
 

@@ -12,8 +12,8 @@
 
 #include <lcthw/list.h>
 #include <lcthw/list_algos.h>
-#include <darray.h>
-#include <darray_algos.h>
+#include <lcthw/darray.h>
+#include <lcthw/darray_algos.h>
 
 #include "dbg.h"
 #include "bstrlib.h"
@@ -27,5 +27,6 @@
 #include "tilemap.h"
 #include "tiletype.h"
 #include "vec2.h"
+#include "textbox.h"
 
 #endif

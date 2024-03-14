@@ -1,7 +1,10 @@
 #ifndef _grafx_tile_h
 #define _grafx_tile_h
 
-#include "grafx.h"
+#include "entity.h"
+#include "tiletype.h"
+#include "tile.h"
+#include "bstrlib.h"
 
 #define GFX_TILE_WIDTH 64
 

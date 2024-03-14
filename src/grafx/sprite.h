@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include <SDL2/SDL.h>
 
-#include "grafx.h"
+#include "angle.h"
+#include "entity.h"
 
 typedef struct GFX_Sprite{
     GFX_Entity base;

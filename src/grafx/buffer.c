@@ -70,7 +70,7 @@ GFX_ERROR_CODE GFX_BufferClear(GFX_Buffer *buffer)
 
     for(Uint32 row = 0; row < buffer->height; row++){
         for(Uint32 column = 0; column < buffer->width; column++){
-            buffer->pixels[row][column] = 0;
+            buffer->pixels[row][column] = 0xFFFFFF00;
         }
     }
 

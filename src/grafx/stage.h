@@ -1,9 +1,12 @@
 #ifndef _grafx_stage_h
 #define _grafx_stage_h
 
+#include <lcthw/darray.h>
+
 #include "tilemap.h"
 #include "buffer.h"
 #include "bstrlib.h"
+#include "sprite.h"
 
 typedef struct{
     const_bstring id;

@@ -1,7 +1,16 @@
 #ifndef _grafx_camera_h
 #define _grafx_camera_h
 
-#include "grafx.h"
+#include <lcthw/darray_algos.h>
+
+#include "entity.h"
+#include "buffer.h"
+#include "stage.h"
+#include "vec2.h"
+#include "bstrlib.h"
+#include "angle.h"
+#include "buffer.h"
+#include "sprite.h"
 
 typedef struct {
     GFX_Entity base;

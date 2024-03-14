@@ -3,3 +3,4 @@
 *.a
 *_tests
 tests/tests.log
+impl_test

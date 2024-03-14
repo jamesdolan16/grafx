@@ -1,20 +1,23 @@
-#ifndef _grafx_angle
-#define _grafx_angle
+#ifndef _grafx_angle_h
+#define _grafx_angle_h
 
 #include <math.h>
 
-#include "grafx.h"
+#include "dbg.h"
+#include "vec2.h"
 
 #define GFX_PI 3.14159
 #define GFX_ANGLE_MIN_ACCURACY 0.000001
 #define GFX_ANGLE_EQ(a, b) fabs(a - b) <= GFX_ANGLE_MIN_ACCURACY
+
+typedef struct GFX_Vec2 GFX_Vec2;
 
 typedef enum {
     GFX_ANGLE_FORMAT_RADIAN,
     GFX_ANGLE_FORMAT_DEGREE
 } GFX_ANGLE_FORMAT;
 
-typedef struct {
+typedef struct GFX_Angle{
     GFX_ANGLE_FORMAT format; 
     double value;
 } GFX_Angle;

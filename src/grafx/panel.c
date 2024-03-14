@@ -2,17 +2,18 @@
 
 static GFX_Panel *PanelCreate()
 {
-    GFX_Panel *panel = (GFX_Panel *)calloc(1, sizeof(panel));
+    GFX_Panel *panel = (GFX_Panel *)calloc(1, sizeof(GFX_Panel));
     return panel;
 }
 
 GFX_Panel *GFX_PanelConstruct(SDL_Renderer *renderer, const_bstring id, GFX_Buffer *buffer, 
                             Uint32 width, Uint32 height, Uint32 x, Uint32 y)
-{
-    check(renderer != NULL, "Null renderer provided.");
-    check(buffer != NULL, "Null buffer provided.");
+{    
     GFX_Panel *panel = PanelCreate();
     check_mem(panel);
+
+    check(renderer != NULL, "Null renderer provided.");
+    check(buffer != NULL, "Null buffer provided.");
 
     SDL_Texture *texture = SDL_CreateTexture(renderer, buffer->sdl_pixel_format,
                                             SDL_TEXTUREACCESS_STREAMING,
@@ -43,14 +44,18 @@ GFX_ERROR_CODE GFX_PanelRender(GFX_Panel *panel)
 {
     check_mem(panel);
 
+    for(int i = 0; i < 20; i++){
+        for(int j = 0; j < 20; j++){
+            int q = panel->buffer->pixels[j][i];
+        }
+    }
     int rc = SDL_UpdateTexture(panel->texture, NULL, panel->buffer->pixels, 
                         panel->width * sizeof(Uint32));
     check_sdl_rc(rc);
-
     rc = SDL_RenderCopy(panel->renderer, panel->texture, NULL, NULL);
     check_sdl_rc(rc);
 
-    GFX_BufferClear(panel->buffer);
+    //GFX_BufferClear(panel->buffer);
 
     return GFX_EC_NOERROR;
 error: 

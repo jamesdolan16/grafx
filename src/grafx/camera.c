@@ -5,6 +5,25 @@ static GFX_Camera *CameraCreate()
     return (GFX_Camera *)calloc(1, sizeof(GFX_Camera));
 }
 
+/**
+ * Sorts the sprites in reverse order by distance (farthest first)
+*/
+static int SortSpritesByDistance(const void *a, const void *b)
+{
+    if(((GFX_Sprite *)a)->distance > ((GFX_Sprite *)b)->distance) return -1;
+    if(((GFX_Sprite *)b)->distance < ((GFX_Sprite *)b)->distance) return 1;
+    else return 0;
+}
+
+/**
+ * Calculate the camera plane vector by shifting the camera angle (direction) a
+ * quarter-turn (pi/2 or 90deg) and then converting the new angle to a vec2.
+*/
+static void CalculateCameraPlaneVec2(GFX_Camera *camera)
+{
+    camera->plane = GFX_Vec2FromAngle(GFX_AngleRightAngle(camera->base.angle));
+}
+
 GFX_Camera *GFX_CameraConstruct(const_bstring id, float pos_x, float pos_y, float pos_h,
                                 GFX_Angle pos_a, GFX_Buffer *buffer, GFX_Stage *stage,
                                 Uint32 width, Uint32 height)
@@ -38,10 +57,8 @@ error:
 
 GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
 {
-    GFX_ERROR_CODE ec = CalculateCameraPlaneVec2(camera);
+    CalculateCameraPlaneVec2(camera);
     GFX_Vec2 dVec2 = GFX_Vec2FromAngle(camera->base.angle);
-
-    double time = 0, old_time = 0;  // Time of current and previous frame
 
     // Cast floor and ceiling first
     for(Uint32 y = 0; y < camera->height; y++){
@@ -70,8 +87,11 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
 
         for(Uint32 x = 0; x < camera->width; ++x){
             // the cell coord is simply got from the integer parts of floorX and floorY
-            int cell_x = (int)(floor_x);
-            int cell_y = (int)(floor_y);
+            Uint16 cell_x = (int)floor(floor_x);
+            if(cell_x >= camera->stage->tilemap->width) cell_x = camera->stage->tilemap->width - 1;
+
+            Uint16 cell_y = (int)floor(floor_y);
+            if(cell_y >= camera->stage->tilemap->height) cell_y = camera->stage->tilemap->height - 1;
 
             // get the texture coordinate from the fractional part
             int tx = (int)(GFX_TILE_WIDTH * (floor_x - cell_x)) & (GFX_TILE_WIDTH - 1);
@@ -80,9 +100,9 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
             floor_x += floor_step_x;
             floor_y += floor_step_y;
 
-            GFX_TileType tt = camera->stage->tilemap->tiles[(int)camera->base.x][(int)camera->base.y]->tiletype;
+            GFX_TileType *tt = camera->stage->tilemap->tiles[cell_x][cell_y]->tiletype;
 
-            Uint32 colour = ((Uint32 *)tt.surface->pixels)[GFX_TILE_WIDTH * ty + tx];   // Floor
+            Uint32 colour = ((Uint32 *)tt->surface->pixels)[GFX_TILE_WIDTH * ty + tx];   // Floor
             colour = (colour >> 1) & 8355711;   // Make it darker
             camera->buffer->pixels[y][x] = colour;
 
@@ -160,7 +180,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
         int draw_start = -line_height / 2 + camera->height / 2;
         if(draw_start < 0) draw_start = 0;
 
-        int draw_end = line_height / 2 + camera->height / 2;
+        Uint32 draw_end = line_height / 2 + camera->height / 2;
         if(draw_end > camera->height) draw_end = camera->height - 1;
 
         SDL_Surface *texture = camera->stage->tilemap->tiles[map_x][map_y]->tiletype->surface;
@@ -181,7 +201,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
 
         // starting texture coordinate
         double tex_pos = (draw_start - camera->height / 2 + line_height / 2) * c_step;
-        for(int y = draw_start; y < draw_end; y++){
+        for(Uint32 y = draw_start; y < draw_end; y++){
             // cast the texture coordinate to integer and mask with (tex_height - 1) in case of overflow
             int tex_y = (int)tex_pos & (texture->h - 1);
             tex_pos += c_step;
@@ -232,7 +252,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
         // calculate the lowest and heightest pixels to fill in current stripe
         int draw_start_y = -sprite_height / 2 + camera->height / 2 + v_pos_screen;
         if(draw_start_y < 0) draw_start_y = 0;
-        int draw_end_y = sprite_height / 2 + camera->height / 2 + v_pos_screen;
+        Uint32 draw_end_y = sprite_height / 2 + camera->height / 2 + v_pos_screen;
         if(draw_end_y > camera->height) draw_end_y = camera->height - 1;
 
         // calculate the width of the sprite
@@ -240,11 +260,11 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
         
         int draw_start_x = -sprite_width / 2 + sprite_screen_x;
         if(draw_start_x < 0) draw_start_x = 0;
-        int draw_end_x = sprite_width / 2 + sprite_screen_x;
+        Uint32 draw_end_x = sprite_width / 2 + sprite_screen_x;
         if(draw_end_x >= camera->width) draw_end_x = camera->width - 1;
 
         // loop through every vertical stripe of the sprite on screen
-        for(int stripe = draw_start_x; stripe < draw_end_x; stripe++){
+        for(Uint32 stripe = draw_start_x; stripe < draw_end_x; stripe++){
             int tex_x = (int)(256 * (stripe - (-sprite_width / 2 + sprite_screen_x))
                                 * GFX_TILE_WIDTH / sprite_width) / 256;
             /** the conditions in the if are
@@ -256,7 +276,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
             if(transform_y > 0 && stripe > 0 && stripe < camera->width 
                 && transform_y < camera->z_buffer[stripe])
             {
-                for(int y = draw_start_y; y < draw_end_y; y++){
+                for(Uint32 y = draw_start_y; y < draw_end_y; y++){
                     int d = (y - sprite->v_pos) * 256 - camera->height * 128 + sprite_height * 128; // 256 and 128 to avoid floats
                     int tex_y = ((d * GFX_TILE_WIDTH) / sprite_height) / 256;
                     Uint32 p_colour = ((Uint32 *)(sprite->texture->pixels))[sprite->texture->h * tex_y + tex_x];
@@ -265,23 +285,6 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
             }
         }
     }
-}
 
-/**
- * Sorts the sprites in reverse order by distance (farthest first)
-*/
-static int SortSpritesByDistance(const void *a, const void *b)
-{
-    if(((GFX_Sprite *)a)->distance > ((GFX_Sprite *)b)->distance) return -1;
-    if(((GFX_Sprite *)b)->distance < ((GFX_Sprite *)b)->distance) return 1;
-    else return 0;
-}
-
-/**
- * Calculate the camera plane vector by shifting the camera angle (direction) a
- * quarter-turn (pi/2 or 90deg) and then converting the new angle to a vec2.
-*/
-static GFX_ERROR_CODE CalculateCameraPlaneVec2(GFX_Camera *camera)
-{
-    camera->plane = GFX_Vec2FromAngle(GFX_AngleRightAngle(camera->base.angle));
+    return GFX_EC_NOERROR;
 }

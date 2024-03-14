@@ -7,11 +7,11 @@ static GFX_Stage *StageCreate()
 
 GFX_Stage *GFX_StageContruct(const_bstring id, GFX_Buffer *buffer, GFX_TileMap *tilemap)
 {
-    check(buffer != NULL, "Null buffer provided.");
-    check(tilemap != NULL, "Null tilemap provided.");
-
     GFX_Stage *stage = StageCreate();
     check_mem(stage);
+    
+    check(buffer != NULL, "Null buffer provided.");
+    check(tilemap != NULL, "Null tilemap provided.");
 
     stage->sprites = DArray_create(sizeof(GFX_Sprite), 32);
     check_mem(stage->sprites);

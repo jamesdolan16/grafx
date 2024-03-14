@@ -1,7 +1,8 @@
 #ifndef _grafx_entity_h
 #define _grafx_entity_h
 
-#include "grafx.h"
+#include "angle.h"
+#include "bstrlib.h"
 
 /**
  * Store information about any "thing" that can exist in the game world

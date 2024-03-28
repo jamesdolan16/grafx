@@ -104,9 +104,9 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
 
             Uint32 colour = ((Uint32 *)tt->surface->pixels)[GFX_TILE_WIDTH * ty + tx];   // Floor
             colour = (colour >> 1) & 8355711;   // Make it darker
-            camera->buffer->pixels[y][x] = colour;
+            camera->buffer->pixels[x + y * camera->height] = colour;
 
-            camera->buffer->pixels[camera->height - y - 1][x] = colour;     // ceiling (symmetrical, at screenheight - y - 1 instead of 1)
+            camera->buffer->pixels[x + (camera->width * camera->height - y - 1)] = colour;     // ceiling (symmetrical, at screenheight - y - 1 instead of 1)
         }
     }
 
@@ -164,7 +164,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
                 vertical_hit = SDL_TRUE;
             }
 
-            if(camera->stage->tilemap->tiles[map_x][map_y]->tiletype->is_solid){
+            if(camera->stage->tilemap->tiles[map_x][map_y] > 0){
                 hit_wall = SDL_TRUE;
             }
         }
@@ -208,7 +208,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
             Uint32 p_colour = ((Uint32 *)texture->pixels)[texture->h * tex_y + tex_x];
             // make colour darker for y-sides: RGB bytes divided by 2 then anded with this magic number
             if(vertical_hit) p_colour = (p_colour >> 1) & 835571;
-            camera->buffer->pixels[y][x] = p_colour;
+            camera->buffer->pixels[x + camera->width * y] = p_colour;
         }
 
         // set the z_buffer for sprite casting
@@ -280,7 +280,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
                     int d = (y - sprite->v_pos) * 256 - camera->height * 128 + sprite_height * 128; // 256 and 128 to avoid floats
                     int tex_y = ((d * GFX_TILE_WIDTH) / sprite_height) / 256;
                     Uint32 p_colour = ((Uint32 *)(sprite->texture->pixels))[sprite->texture->h * tex_y + tex_x];
-                    if((p_colour & 0x00FFFFFF) != 0) camera->buffer->pixels[y][stripe] = p_colour;  // paint pixel if it isnt black, black is the invisible colour
+                    if((p_colour & 0x00FFFFFF) != 0) camera->buffer->pixels[stripe + camera->width * y] = p_colour;  // paint pixel if it isnt black, black is the invisible colour
                 }
             }
         }

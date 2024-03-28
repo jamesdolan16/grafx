@@ -55,28 +55,29 @@ int main(void)
     TTF_Font *font = TTF_OpenFont("resources/fonts/UbuntuMono-R.ttf", 16);
     check_sdl_ptr(font);
 
-    GFX_Buffer *buffer = GFX_BufferConstruct(NULL, 20, 20, SDL_PIXELFORMAT_ARGB8888);
-
-    GFX_Panel *panel = GFX_PanelConstruct(renderer, NULL, buffer, 20, 20, 0, 0);
+    GFX_Buffer *buffer = GFX_BufferConstruct(NULL, SCREENWIDTH, SCREENHEIGHT, SDL_PIXELFORMAT_ARGB8888);
+    
+    GFX_Panel *panel = GFX_PanelConstruct(renderer, NULL, buffer, SCREENWIDTH, SCREENHEIGHT, 0, 0);
     GFX_TileMap *tilemap = GFX_TileMapFromIntArray(worldMap, MAPWIDTH, MAPHEIGHT);
     GFX_Stage *stage = GFX_StageContruct(NULL, buffer, tilemap);
-    GFX_Camera *camera = GFX_CameraConstruct(NULL, 22, 11.5, 0, GFX_AngleFromRad(0.0), buffer, stage, 20, 20);
-
+    GFX_Camera *camera = GFX_CameraConstruct(NULL, 1.5, 1.5, 0, GFX_AngleFromRad(0.0), buffer, stage, SCREENWIDTH, SCREENHEIGHT);
 
     int close = 0;
     double time = 0, oldTime = 0;   // time of current frame and previous frame
 
     SDL_Event event;
     SDL_Colour colour = { 0, 255, 255, 255 };
-    GFX_TextBox *textbox = GFX_TextBoxConstruct(0, 0, 200, 50, true, colour, colour, panel, font);
+    GFX_TextBox *textbox = GFX_TextBoxConstruct(5, 2, 200, 50, true, colour, colour, panel, font);
 
     while(!close){
         ec = SDL_RenderClear(renderer);
         check_sdl_rc(ec);
-        
+
         ec = GFX_CameraRender(camera);
-        //ec = GFX_TextBoxRender(textbox);
+        ec = GFX_TextBoxRender(textbox);
         GFX_PanelRender(panel);
+
+        camera->base.angle.value += GFX_AngleFromRad(0.025).value;
 
         oldTime = time;
         time = SDL_GetTicks();
@@ -89,12 +90,11 @@ int main(void)
         SDL_Delay(8);
     }
 
-    /*GFX_CameraDestroy(camera);
+    GFX_CameraDestroy(camera);
     GFX_StageDestroy(stage);
     GFX_TileMapDestroy(tilemap);
     GFX_PanelDestroy(panel);
     GFX_BufferDestroy(buffer);
-*/
     TTF_CloseFont(font);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

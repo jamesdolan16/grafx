@@ -81,7 +81,7 @@ GFX_TileMap *GFX_TileMapFromIntArray(int *map_array, const Uint16 width, const U
 
     int i = 0;
     //tiletypes[i++] = GFX_TileTypeConstruct(NULL, NULL, SDL_FALSE);  // Free space
-    tiletypes[i++] = GFX_TileTypeConstruct(NULL, load_texture("resources/images/redbrick.png"), SDL_TRUE);
+    tiletypes[i++] = GFX_TileTypeConstruct(NULL, load_texture("resources/images/redbrick.png"), SDL_FALSE);
     tiletypes[i++] = GFX_TileTypeConstruct(NULL, load_texture("resources/images/redbrick.png"), SDL_TRUE);
     tiletypes[i++] = GFX_TileTypeConstruct(NULL, load_texture("resources/images/bluestone.png"), SDL_TRUE);
     tiletypes[i++] = GFX_TileTypeConstruct(NULL, load_texture("resources/images/colorstone.png"), SDL_TRUE);

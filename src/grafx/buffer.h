@@ -10,7 +10,7 @@
 typedef struct {
     Uint32 width;
     Uint32 height;
-    Uint32 **pixels;
+    Uint32 *pixels;
     Uint32 sdl_pixel_format;
 } GFX_Buffer;
 

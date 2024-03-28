@@ -43,19 +43,14 @@ error:
 GFX_ERROR_CODE GFX_PanelRender(GFX_Panel *panel)
 {
     check_mem(panel);
-
-    for(int i = 0; i < 20; i++){
-        for(int j = 0; j < 20; j++){
-            int q = panel->buffer->pixels[j][i];
-        }
-    }
+    
     int rc = SDL_UpdateTexture(panel->texture, NULL, panel->buffer->pixels, 
                         panel->width * sizeof(Uint32));
     check_sdl_rc(rc);
     rc = SDL_RenderCopy(panel->renderer, panel->texture, NULL, NULL);
     check_sdl_rc(rc);
 
-    //GFX_BufferClear(panel->buffer);
+    GFX_BufferClear(panel->buffer);
 
     return GFX_EC_NOERROR;
 error: 

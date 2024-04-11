@@ -1,6 +1,9 @@
 #ifndef _grafx_camera_h
 #define _grafx_camera_h
 
+#define FLOORTEX 6
+#define CEILTEX 5
+
 #include <lcthw/darray_algos.h>
 
 #include "entity.h"

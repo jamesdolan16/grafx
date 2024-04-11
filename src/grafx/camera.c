@@ -85,7 +85,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
         double floor_x = camera->base.x + row_distance * raydir_x0;
         double floor_y = camera->base.y + row_distance * raydir_y0;
 
-        for(Uint32 x = 0; x < camera->width; ++x){
+        for(Uint32 x = 0; x < camera->width; x++){
             // the cell coord is simply got from the integer parts of floorX and floorY
             Uint16 cell_x = (int)floor(floor_x);
             if(cell_x >= camera->stage->tilemap->width) cell_x = camera->stage->tilemap->width - 1;
@@ -100,18 +100,20 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
             floor_x += floor_step_x;
             floor_y += floor_step_y;
 
-            GFX_TileType *tt = camera->stage->tilemap->tiles[cell_x][cell_y]->tiletype;
+            GFX_TileType **tiletypes = camera->stage->tilemap->tiletypes;
 
-            Uint32 colour = ((Uint32 *)tt->surface->pixels)[GFX_TILE_WIDTH * ty + tx];   // Floor
+            Uint32 colour = ((Uint32 *)tiletypes[FLOORTEX]->surface->pixels)[GFX_TILE_WIDTH * ty + tx];   // Floor
             colour = (colour >> 1) & 8355711;   // Make it darker
-            camera->buffer->pixels[x + y * camera->height] = colour;
-
-            camera->buffer->pixels[x + (camera->width * camera->height - y - 1)] = colour;     // ceiling (symmetrical, at screenheight - y - 1 instead of 1)
+            camera->buffer->pixels[x + y * camera->width] = colour;
+    
+            colour = ((Uint32 *)tiletypes[CEILTEX]->surface->pixels)[GFX_TILE_WIDTH * ty + tx];   // Floor
+            colour = (colour >> 1) & 8355711;   // Make it darker
+            camera->buffer->pixels[x + (camera->height - y - 1) * camera->width] = colour;     // ceiling (symmetrical, at screenheight - y - 1 instead of 1)
         }
     }
 
     // Cast walls
-    for(Uint32 x = 0; x < camera->width; ++x){
+    for(Uint32 x = 0; x < camera->width; x++){
         // Calculate ray position and direction
         double camera_x = 2 * x / (double)camera->width - 1;    // x coordinate in camera space
 
@@ -164,9 +166,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
                 vertical_hit = SDL_TRUE;
             }
 
-            if(camera->stage->tilemap->tiles[map_x][map_y] > 0){
-                hit_wall = SDL_TRUE;
-            }
+            hit_wall = camera->stage->tilemap->tiles[map_x][map_y]->tiletype->is_solid;
         }
 
         // calulate the distance from wall to camera plane

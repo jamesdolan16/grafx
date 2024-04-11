@@ -94,6 +94,8 @@ GFX_TileMap *GFX_TileMapFromIntArray(int *map_array, const Uint16 width, const U
     GFX_TileMap *tilemap = GFX_TileMapConstruct(width, height);
     check_mem(tilemap);
 
+    tilemap->tiletypes = tiletypes;
+
     for(Uint16 x = 0; x < width; x++){
         for(Uint16 y = 0; y < height; y++){
             tilemap->tiles[x][y]->tiletype = tiletypes[map_array[y * width + x]];

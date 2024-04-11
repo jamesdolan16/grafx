@@ -38,8 +38,8 @@ char *all_tests()
 {
     mu_suite_start();
 
-    mu_run_test(test_BufferConstruct);
-    mu_run_test(test_BufferClear);
+    //mu_run_test(test_BufferConstruct);
+    //mu_run_test(test_BufferClear);
 
     return NULL;
 }

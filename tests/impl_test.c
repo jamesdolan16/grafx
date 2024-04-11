@@ -9,6 +9,9 @@
 #define MAPWIDTH 24
 #define MAPHEIGHT 24
 
+#define MOVESPEED 0.1
+#define ROTSPEED 0.05
+
 SDL_Window *window;
 SDL_Renderer *renderer;
 
@@ -60,34 +63,80 @@ int main(void)
     GFX_Panel *panel = GFX_PanelConstruct(renderer, NULL, buffer, SCREENWIDTH, SCREENHEIGHT, 0, 0);
     GFX_TileMap *tilemap = GFX_TileMapFromIntArray(worldMap, MAPWIDTH, MAPHEIGHT);
     GFX_Stage *stage = GFX_StageContruct(NULL, buffer, tilemap);
-    GFX_Camera *camera = GFX_CameraConstruct(NULL, 1.5, 1.5, 0, GFX_AngleFromRad(0.0), buffer, stage, SCREENWIDTH, SCREENHEIGHT);
+    GFX_Camera *camera = GFX_CameraConstruct(NULL, 1.5, 1.5, 0, GFX_AngleFromRad(GFX_PI/2), buffer, stage, SCREENWIDTH, SCREENHEIGHT);
 
     int close = 0;
     double time = 0, oldTime = 0;   // time of current frame and previous frame
 
     SDL_Event event;
-    SDL_Colour colour = { 0, 255, 255, 255 };
-    GFX_TextBox *textbox = GFX_TextBoxConstruct(5, 2, 200, 50, true, colour, colour, panel, font);
+    SDL_Colour colour = { 255, 255, 255, SDL_ALPHA_OPAQUE };
+    GFX_TextBox *textbox = GFX_TextBoxConstruct(0, 0, 200, 50, true, colour, colour, panel, font);
 
     while(!close){
         ec = SDL_RenderClear(renderer);
         check_sdl_rc(ec);
 
         ec = GFX_CameraRender(camera);
-        ec = GFX_TextBoxRender(textbox);
-        GFX_PanelRender(panel);
 
-        camera->base.angle.value += GFX_AngleFromRad(0.025).value;
+        //camera->base.angle.value += GFX_AngleFromRad(0.0125).value;      // Rotate camera slowly to imitate user input
+        //camera->base.x += 0.002;
 
         oldTime = time;
         time = SDL_GetTicks();
         double frameTime = (time - oldTime) / 1000.0;
-        sprintf(textbox->text, "posX: %f posY: %f fps: %f debug: %s", camera->base.x, camera->base.y, frameTime, SDL_GetError());
+        double fps = 1.0 / frameTime;
+        sprintf(textbox->text, "pos x: %f pos y: %f angle: %f fps: %f debug: %s", camera->base.x, camera->base.y, camera->base.angle.value, fps, SDL_GetError());
+        //printf("%s\n\n", textbox->text);
+
+        GFX_PanelRender(panel);
+        ec = GFX_TextBoxRender(textbox);
 
         SDL_RenderPresent(renderer);
-        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-        SDL_PollEvent(&event);
-        SDL_Delay(8);
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_TRANSPARENT);
+        
+        // TODO: Replace with proper input handler
+        while(SDL_PollEvent(&event)){
+            double dirX, dirY, planeX, planeY, oldDirX, oldPlaneX;
+
+            dirX = cos(camera->base.angle.value);
+            dirY = sin(camera->base.angle.value);
+            planeX = cos(GFX_AngleRightAngle(camera->base.angle).value);
+            planeY = sin(GFX_AngleRightAngle(camera->base.angle).value);
+
+            switch(event.type){
+                case SDL_QUIT:
+                    return 1;
+                    break;
+                case SDL_KEYDOWN:
+                    switch(event.key.keysym.scancode){
+                        case SDL_SCANCODE_W:
+                            if(worldMap[(int)camera->base.y][(int)(camera->base.x + dirX * MOVESPEED)] == 0) camera->base.x += dirX * MOVESPEED;
+                            if(worldMap[(int)(camera->base.y + dirY * MOVESPEED)][(int)camera->base.x] == 0) camera->base.y += dirY * MOVESPEED;
+                            break;
+                        case SDL_SCANCODE_S:
+                            if(worldMap[(int)camera->base.y][(int)(camera->base.x - dirX * MOVESPEED)] == 0) camera->base.x -= dirX * MOVESPEED;
+                            if(worldMap[(int)(camera->base.y - dirY * MOVESPEED)][(int)camera->base.x] == 0) camera->base.y -= dirY * MOVESPEED;
+                            break;
+                        case SDL_SCANCODE_A:
+                            camera->base.angle.value -= ROTSPEED;
+                            break;
+                        case SDL_SCANCODE_D:
+                            camera->base.angle.value += ROTSPEED;
+                            break;
+                        case SDL_SCANCODE_E:
+                            if(worldMap[(int)camera->base.y][(int)(camera->base.x + planeX * MOVESPEED)] == 0) camera->base.x += planeX * MOVESPEED;
+                            if(worldMap[(int)(camera->base.y + planeY * MOVESPEED)][(int)camera->base.x] == 0) camera->base.y += planeY * MOVESPEED;
+                            break;
+                        case SDL_SCANCODE_Q:
+                            if(worldMap[(int)camera->base.y][(int)(camera->base.x - planeX * MOVESPEED)] == 0) camera->base.x -= planeX * MOVESPEED;
+                            if(worldMap[(int)(camera->base.y - planeY * MOVESPEED)][(int)camera->base.y] == 0) camera->base.y -= planeY * MOVESPEED;
+                            break;
+                        default:
+                            break;
+                    }
+            }
+        }
+        //SDL_Delay(1000/120);     // Maximum number of frames will always be 120
     }
 
     GFX_CameraDestroy(camera);

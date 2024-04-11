@@ -35,6 +35,11 @@ error:
     return GFX_EC_NULLPTR;
 }
 
+/**
+ * Renders the provided textbox using the renderer provided by the textbox.panel
+ * 
+ * Warn: Needs converting to render to a panel buffer instead of directly using the renderer
+*/
 GFX_ERROR_CODE GFX_TextBoxRender(GFX_TextBox *textbox)
 {
     SDL_Surface *surface = TTF_RenderText_Solid(textbox->font, textbox->text, textbox->fg_colour);
@@ -56,7 +61,13 @@ GFX_ERROR_CODE GFX_TextBoxRender(GFX_TextBox *textbox)
     int rc = SDL_RenderCopy(textbox->panel->renderer, texture, NULL, &rect);
     check_sdl_rc(rc);
 
+    SDL_FreeSurface(surface);
+    SDL_DestroyTexture(texture);
+
     return GFX_EC_NOERROR;
 error:
+    if(surface) SDL_FreeSurface(surface);
+    if(texture) SDL_DestroyTexture(texture);
+
     return GFX_EC_ERROR;
 }

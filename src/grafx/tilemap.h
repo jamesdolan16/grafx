@@ -7,6 +7,7 @@
 
 typedef struct {
     GFX_Tile ***tiles;      // I know it's horrible, boohoo! I need a 2D array of tile pointers!
+    GFX_Tile **tiletypes;
     Uint16 width;
     Uint16 height;
 } GFX_TileMap;

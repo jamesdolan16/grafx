@@ -24,6 +24,18 @@ static void CalculateCameraPlaneVec2(GFX_Camera *camera)
     camera->plane = GFX_Vec2FromAngle(GFX_AngleRightAngle(camera->base.angle));
 }
 
+static Uint32 DarkenColour(SDL_PixelFormat* format, Uint32 src_colour, float factor)
+{
+    Uint8 r, g, b, a;
+    SDL_GetRGBA(src_colour, format, &r, &g, &b, &a);
+    r *= factor;
+    g *= factor;
+    b *= factor; 
+
+    Uint32 new_colour = SDL_MapRGBA(format, r, g, b, a);
+    return new_colour;
+}
+
 GFX_Camera *GFX_CameraConstruct(const_bstring id, float pos_x, float pos_y, float pos_h,
                                 GFX_Angle pos_a, GFX_Buffer *buffer, GFX_Stage *stage,
                                 Uint32 width, Uint32 height)
@@ -103,11 +115,11 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
             GFX_TileType **tiletypes = camera->stage->tilemap->tiletypes;
 
             Uint32 colour = ((Uint32 *)tiletypes[FLOORTEX]->surface->pixels)[GFX_TILE_WIDTH * ty + tx];   // Floor
-            colour = (colour >> 1) & 8355711;   // Make it darker
+            colour = DarkenColour(camera->buffer->sdl_pixel_format, colour, 0.7);   // Make it darker
             camera->buffer->pixels[x + y * camera->width] = colour;
     
             colour = ((Uint32 *)tiletypes[CEILTEX]->surface->pixels)[GFX_TILE_WIDTH * ty + tx];   // Floor
-            colour = (colour >> 1) & 8355711;   // Make it darker
+            colour = DarkenColour(camera->buffer->sdl_pixel_format, colour, 0.7);   // Make it darker
             camera->buffer->pixels[x + (camera->height - y - 1) * camera->width] = colour;     // ceiling (symmetrical, at screenheight - y - 1 instead of 1)
         }
     }
@@ -207,7 +219,7 @@ GFX_ERROR_CODE GFX_CameraRender(GFX_Camera *camera)
             tex_pos += c_step;
             Uint32 p_colour = ((Uint32 *)texture->pixels)[texture->h * tex_y + tex_x];
             // make colour darker for y-sides: RGB bytes divided by 2 then anded with this magic number
-            if(vertical_hit) p_colour = (p_colour >> 1) & 835571;
+            if(vertical_hit) p_colour = DarkenColour(camera->buffer->sdl_pixel_format, p_colour, 0.7);
             camera->buffer->pixels[x + camera->width * y] = p_colour;
         }
 

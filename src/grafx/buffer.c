@@ -11,7 +11,7 @@ static GFX_Buffer *BufferCreate()
  * Creates a GFX_Buffer with the provided attributes
 */
 GFX_Buffer *GFX_BufferConstruct(const_bstring id, Uint32 width, Uint32 height, 
-                            Uint32 sdl_pixel_format)
+                            SDL_PixelFormatEnum sdl_pixel_format)
 {
     Uint32 *pixels = NULL;
 
@@ -21,8 +21,12 @@ GFX_Buffer *GFX_BufferConstruct(const_bstring id, Uint32 width, Uint32 height,
     pixels = calloc(height, sizeof(Uint32) * width * height);
     check_mem(pixels);
 
+    SDL_PixelFormat* pixel_format = SDL_AllocFormat(sdl_pixel_format);
+    check_sdl_ptr(pixel_format);
+
     *buffer = (GFX_Buffer){.width=width, .height=height, .pixels=pixels, 
-                            .sdl_pixel_format=sdl_pixel_format};
+                            .sdl_pixel_format_enum=sdl_pixel_format,
+                            .sdl_pixel_format=pixel_format};
 
     return buffer;
 

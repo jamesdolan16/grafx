@@ -15,7 +15,7 @@ GFX_Panel *GFX_PanelConstruct(SDL_Renderer *renderer, const_bstring id, GFX_Buff
     check(renderer != NULL, "Null renderer provided.");
     check(buffer != NULL, "Null buffer provided.");
 
-    SDL_Texture *texture = SDL_CreateTexture(renderer, buffer->sdl_pixel_format,
+    SDL_Texture *texture = SDL_CreateTexture(renderer, buffer->sdl_pixel_format_enum,
                                             SDL_TEXTUREACCESS_STREAMING,
                                             width, height);
     check_sdl_ptr(texture);

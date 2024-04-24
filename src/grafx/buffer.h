@@ -7,6 +7,9 @@
 #include "dbg.h"
 #include "error_code.h"
 
+/**
+ * Object to store pixel buffers. Used in conjunction with 
+*/
 typedef struct {
     Uint32 width;
     Uint32 height;
@@ -20,6 +23,9 @@ GFX_Buffer *GFX_BufferConstruct(const_bstring id, Uint32 width, Uint32 height,
 
 GFX_ERROR_CODE GFX_BufferDestroy(GFX_Buffer *buffer);
 
+/**
+ * Set all the pixels in the provided buffer to 0
+*/
 GFX_ERROR_CODE GFX_BufferClear(GFX_Buffer *buffer);
 
 #endif

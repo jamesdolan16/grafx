@@ -43,7 +43,6 @@ error:
 GFX_ERROR_CODE GFX_PanelRender(GFX_Panel *panel)
 {
     check_mem(panel);
-    
     int rc = SDL_UpdateTexture(panel->texture, NULL, panel->buffer->pixels, 
                         panel->width * sizeof(Uint32));
     check_sdl_rc(rc);

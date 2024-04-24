@@ -1,4 +1,4 @@
-CFLAGS= -std=c17 -g -O0 -fno-inline -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
+CFLAGS= -std=c17 -g -O2 -Wall -Wextra -Isrc -rdynamic -DNDEBUG $(OPTFLAGS)
 COMMON_LIBS=-ldl $(OPTLIBS) -lm -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_gfx -L./lib -llcthw -lbsd
 LDLIBS=$(COMMON_LIBS) -pthread -L./build -lGrafx
 PREFIX?=/urs/local

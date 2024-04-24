@@ -22,7 +22,6 @@ void setup()
 void teardown()
 {
     GFX_BufferDestroy(buffer);
-
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
